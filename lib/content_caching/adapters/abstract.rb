@@ -2,8 +2,9 @@ module ContentCaching
   module Adapter
     class Abstract
 
-      def initialize wrapper
+      def initialize wrapper, options
         @wrapper = wrapper
+        @options = options
       end
 
       def store content

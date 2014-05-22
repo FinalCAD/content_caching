@@ -3,7 +3,7 @@ module ContentCaching
     attr_accessor :adapter
 
     def initialize
-      @adapter = :fs
+      @adapter = { adapter: :fs, options: { directory: 'tmp' }}
     end
   end
 end

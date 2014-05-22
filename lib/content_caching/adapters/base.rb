@@ -4,9 +4,12 @@ module ContentCaching
 
       class UnsupportedAdapter < StandardError ; end
 
-      def self.create(adapter, wrapper)
-        load "content_caching/adapters/#{adapter}_adapter.rb"
-        ContentCaching::Adapter.const_get(klass_adapter(adapter)).new(wrapper)
+      def self.create(adapter_infos, wrapper)
+        adapter_type = adapter_infos[:adapter]
+        options = adapter_infos[:options]
+
+        load "content_caching/adapters/#{adapter_type}_adapter.rb"
+        ContentCaching::Adapter.const_get(klass_adapter(adapter_type)).new(wrapper, options)
       end
 
       private

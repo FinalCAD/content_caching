@@ -5,8 +5,9 @@ module ContentCaching
     let(:configuration) { Configuration.new }
 
     describe '#adapter' do
+      let(:adapter) {{ adapter: :fs, options: { directory: 'tmp' }}}
       it 'the default is fs' do
-        expect(configuration.adapter).to eq(:fs)
+        expect(configuration.adapter).to eq(adapter)
       end
     end
 

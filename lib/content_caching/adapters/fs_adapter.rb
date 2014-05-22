@@ -7,12 +7,8 @@ module ContentCaching
     class FsAdapter < Abstract
       include Implementation
 
-      def initialize(wrapper)
+      def initialize(wrapper, options)
         super
-      end
-
-      def adapter
-        Fs::new
       end
 
       def url
@@ -25,6 +21,17 @@ module ContentCaching
 
       def delete
         adapter.delete document_path, document_name
+      end
+
+      private
+
+      def document_path
+        return @wrapper.document_path unless @options[:directory]
+        Pathname([@options[:directory], @wrapper.document_path].join('/')).cleanpath.to_path
+      end
+
+      def adapter
+        @adapter ||= Fs::new
       end
 
     end
