@@ -25,10 +25,6 @@ module ContentCaching
 
       private
 
-      def document_path
-        @wrapper.document_path
-      end
-
       def adapter
         @adapter ||= Aws::new(@options)
       end
