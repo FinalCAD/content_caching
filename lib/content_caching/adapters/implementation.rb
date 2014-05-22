@@ -2,8 +2,8 @@ module ContentCaching
   module Adapter
     module Implementation
 
-      def store
-        adapter.store
+      def store content
+        adapter.store content
       end
 
       def url
@@ -22,10 +22,6 @@ module ContentCaching
 
       def document_path
         @wrapper.document_path
-      end
-
-      def content
-        @wrapper.content
       end
 
     end

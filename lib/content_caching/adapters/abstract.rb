@@ -6,7 +6,7 @@ module ContentCaching
         @wrapper = wrapper
       end
 
-      def store
+      def store content
         raise NotImplementedError
       end
 
