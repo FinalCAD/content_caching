@@ -22,7 +22,19 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    ContentCaching.configure do |config|
+      config.adapter = { adapter: :fs, options: { directory: 'public/htmls' }}
+    end
+
+    class Wrapper < Struct.new(:document_name, :document_path)
+    end
+
+    content_caching = ContentCaching.new(wrapper)
+    content_caching.store StringIO.new('foo')
+    content_caching.url
+    content_caching.delete
+
+    You can store independently on local storage or s3
 
 ## Contributing
 
