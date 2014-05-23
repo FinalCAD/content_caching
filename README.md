@@ -10,31 +10,89 @@
 
 Add this line to your application's Gemfile:
 
+```
     gem 'content_caching'
+```
 
 And then execute:
 
+```
     $ bundle
+```
 
 Or install it yourself as:
 
+```
     $ gem install content_caching
+```
 
 ## Usage
 
+You can configure content_caching for playing with local storage or aws s3
+
+By befault content_caching provide filesystem configuration like that
+
+```
+    { adapter: :fs, options: { directory: 'tmp' }}
+```
+
+is pretty basic, but you can change these configuration
+
+fs sample
+
+```
     ContentCaching.configure do |config|
       config.adapter = { adapter: :fs, options: { directory: 'public/htmls' }}
     end
+```
 
-    class Wrapper < Struct.new(:document_name, :document_path)
+AWS s3 sample
+
+```
+    ContentCaching.configure do |config|
+      config.adapter = { adapter: :aws,
+              options: { directory: directory, aws_access_key_id: api_key_id,
+                         aws_secret_access_key: api_key_access }}
     end
+```
 
-    content_caching = ContentCaching.new(wrapper)
+for s3 you need provide extra information, bucket name, api key and secret
+
+ContentCaching implement the following interface
+
+```
+    Query
+      .url()
+
+    Command
+      .store()
+      .delete()
+```
+
+When you initialize an Document you need pass an object who respond to .to_path() contract. content_caching provide an Wrapper for help you.
+
+```
+    wrapper = ContentCaching::Wrapper.new('path of your document')
+    content_caching = ContentCaching::Document.new(wrapper)
+```
+
+You can store any content when you pass an Object respond to .read() contract to method .store()
+
+```
     content_caching.store StringIO.new('foo')
-    content_caching.url
-    content_caching.delete
+```
 
-    You can store independently on local storage or s3
+You can ask for full path
+
+```
+    content_caching.url
+```
+
+And you can delete file
+
+```
+    content_caching.delete
+```
 
 ## Contributing
 

@@ -12,22 +12,22 @@ module ContentCaching
       end
 
       def url
-        adapter.url document_path, document_name
+        adapter.url document_path
       end
 
       def store content
-        adapter.store document_path, document_name, content
+        adapter.store document_path, content
       end
 
       def delete
-        adapter.delete document_path, document_name
+        adapter.delete document_path
       end
 
       private
 
       def document_path
-        return @wrapper.document_path unless @options[:directory]
-        Pathname([@options[:directory], @wrapper.document_path].join('/')).cleanpath.to_path
+        return @wrapper.to_path unless @options[:directory]
+        Pathname([@options[:directory], @wrapper.to_path].join('/')).cleanpath.to_path
       end
 
       def adapter

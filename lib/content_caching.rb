@@ -1,5 +1,6 @@
 require_relative 'content_caching/version'
 require_relative 'content_caching/configuration'
+require_relative 'content_caching/wrapper'
 require_relative 'content_caching/adapters/base'
 
 begin

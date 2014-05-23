@@ -16,12 +16,8 @@ module ContentCaching
 
       private
 
-      def document_name
-        @wrapper.document_name
-      end
-
       def document_path
-        @wrapper.document_path
+        @wrapper.to_path
       end
 
     end

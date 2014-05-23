@@ -1,33 +1,23 @@
 require 'spec_helper'
 
 require 'pathname'
+# require 'configatron'
 
 module ContentCaching
   describe Document do
+    let(:wrapper)         { Wrapper.new(path) }
+    let(:content_caching) { Document.new(wrapper) }
 
     context 'fs' do
-      let(:wrapper)         { OpenStruct.new(options) }
-      let(:content_caching) { Document.new(wrapper) }
-
-      context 'options' do
-
-        context 'without document path' do
-          let(:options) {{ document_name: 'page.html', document_path: nil }}
-          specify do
-            expect(content_caching.url).to eq('tmp/page.html')
-          end
-        end
-
-        context 'with document path' do
-          let(:options) {{ document_name: 'page.html', document_path: 'pages' }}
-          specify do
-            expect(content_caching.url).to eq('tmp/pages/page.html')
-          end
+      context 'without document path' do
+        let(:path) { 'page.html' }
+        specify do
+          expect(content_caching.url).to eq('tmp/page.html')
         end
       end
 
       describe '#store' do
-        let(:options) {{ document_name: 'page.html', document_path: 'public/pages' }}
+        let(:path) { 'public/pages/page.html' }
 
         before do
           content_caching.store Pathname('spec/fixtures/page.html')
@@ -47,15 +37,16 @@ module ContentCaching
     end
 
     context 'aws', pending: true do
-      let(:wrapper)         { OpenStruct.new(options) }
-      let(:options)         {{ document_name: nil, document_path: 'test/page.html' }}
-      let(:content_caching) { Document.new(wrapper) }
+      let(:path)            { 'test/page.html' }
       let(:adapter) do
         { adapter: :aws,
-          options: { directory: 'bucket-name', aws_access_key_id: 'aws_access_key_id',
-                     aws_secret_access_key: 'aws_secret_access_key' }
+          options: { directory: directory, aws_access_key_id: api_key_id,
+                     aws_secret_access_key: api_key_access }
         }
       end
+      let(:directory)      { configatron.directory }
+      let(:api_key_id)     { configatron.api_key_id }
+      let(:api_key_access) { configatron.api_key_access }
 
       before do
         ContentCaching.configure do |config|
@@ -65,7 +56,7 @@ module ContentCaching
 
       describe '#url' do
 
-        let(:url) { 'https://bucket-name.s3.amazonaws.com:443/test/page.html' }
+        let(:url) { "https://#{directory}.s3.amazonaws.com:443/test/page.html" }
 
         specify do
           expect(content_caching.url).to match(url)
@@ -89,7 +80,7 @@ module ContentCaching
 
         specify do
           expect(
-            Aws::S3::Key.new(bucket, options[:document_path])
+            Aws::S3::Key.new(bucket, path)
           ).to be_exists
         end
 
@@ -97,7 +88,7 @@ module ContentCaching
           before do content_caching.delete end
           specify do
             expect(
-              Aws::S3::Key.new(bucket, options[:document_path])
+              Aws::S3::Key.new(bucket, path)
             ).to_not be_exists
           end
         end
