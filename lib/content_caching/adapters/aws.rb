@@ -15,7 +15,8 @@ module ContentCaching
       def store document_path, content
         retry_3_times do
           content.rewind if content.respond_to?(:rewind)
-          s3_interface.put self.options[:directory], document_path, content.read
+          s3_interface.put self.options[:directory], document_path,
+            (content.respond_to?(:read) ? content.read : content)
         end
       end
 

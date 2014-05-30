@@ -3,11 +3,12 @@ module ContentCaching
     class Fs
 
       def store document_path, content
-        Pathname(url(document_path)).write content.read
+        content.rewind if content.respond_to?(:rewind)
+        Pathname(url(document_path)).write content.respond_to?(:read) ? content.read : content
       end
 
-      def url document_path
-        Pathname(document_path).cleanpath.to_path
+      def url document_url
+        document_url
       end
 
       def delete document_path

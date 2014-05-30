@@ -12,7 +12,7 @@ module ContentCaching
       end
 
       def url
-        adapter.url document_path
+        adapter.url document_url
       end
 
       def store content
@@ -24,6 +24,10 @@ module ContentCaching
       end
 
       private
+
+      def document_url
+        @options[:host] + '/' + Pathname(@wrapper.to_path).cleanpath.to_path
+      end
 
       def document_path
         return @wrapper.to_path unless @options[:directory]

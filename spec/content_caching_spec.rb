@@ -12,7 +12,7 @@ module ContentCaching
       context 'without document path' do
         let(:path) { 'page.html' }
         specify do
-          expect(content_caching.url).to eq('tmp/page.html')
+          expect(content_caching.url).to eq('http://0.0.0.0:3000/page.html')
         end
       end
 
