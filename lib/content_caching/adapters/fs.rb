@@ -4,7 +4,7 @@ module ContentCaching
 
       def store document_path, content
         content.rewind if content.respond_to?(:rewind)
-        Pathname(url(document_path)).write content.respond_to?(:read) ? content.read : content
+        File.write url(document_path), content.respond_to?(:read) ? content.read : content
       end
 
       def url document_url
@@ -12,7 +12,7 @@ module ContentCaching
       end
 
       def delete document_path
-        Pathname(url(document_path)).delete
+        File.delete url(document_path)
       end
 
     end

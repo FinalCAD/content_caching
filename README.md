@@ -1,10 +1,10 @@
 # ContentCaching
 
 [![Gem Version](https://badge.fury.io/rb/content_caching.svg)](http://badge.fury.io/rb/content_caching)
-[![Code Climate](https://codeclimate.com/github/joel/content_caching.png)](https://codeclimate.com/github/joel/content_caching)
-[![Dependency Status](https://gemnasium.com/joel/content_caching.png)](https://gemnasium.com/joel/content_caching)
-[![Build Status](https://travis-ci.org/joel/content_caching.svg?branch=master)](https://travis-ci.org/joel/content_caching)
-[![Coverage Status](https://coveralls.io/repos/joel/content_caching/badge.png)](https://coveralls.io/r/joel/content_caching)
+[![Code Climate](https://codeclimate.com/github/FinalCAD/content_caching.png)](https://codeclimate.com/github/FinalCAD/content_caching)
+[![Dependency Status](https://gemnasium.com/FinalCAD/content_caching.png)](https://gemnasium.com/FinalCAD/content_caching)
+[![Build Status](https://travis-ci.org/FinalCAD/content_caching.svg?branch=master)](https://travis-ci.org/FinalCAD/content_caching)
+[![Coverage Status](https://coveralls.io/repos/FinalCAD/content_caching/badge.png)](https://coveralls.io/r/FinalCAD/content_caching)
 
 ## Installation
 
