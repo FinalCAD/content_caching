@@ -28,7 +28,6 @@ module ContentCaching
       def adapter
         @adapter ||= Aws::new(@options)
       end
-
     end
   end
 end

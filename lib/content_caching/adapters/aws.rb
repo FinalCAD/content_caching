@@ -1,8 +1,9 @@
-require 'aws'
+require 'aws-sdk-resources' # This lib is accessible through ::Aws...
 
 module ContentCaching
   module Adapter
     class Aws
+      include RetryableBlock
 
       T_1_DAY = 86400.freeze
 
@@ -13,39 +14,36 @@ module ContentCaching
       end
 
       def store document_path, content
-        retry_3_times do
+        retryable(3) do
           content.rewind if content.respond_to?(:rewind)
-          s3_interface.put self.options[:directory], document_path,
-            (content.respond_to?(:read) ? content.read : content)
+          bucket.put_object key: document_path,
+            body: (content.respond_to?(:read) ? content.read : content)
         end
       end
 
       def url document_path
-        s3_interface.get_link self.options[:directory], document_path, T_1_DAY
+        bucket.object(document_path).presigned_url :get, expires_in: T_1_DAY
       end
 
       def delete document_path
-        retry_3_times do
-          s3_interface.delete self.options[:directory], document_path
+        retryable(3) do
+          bucket.object(document_path).delete
         end
       end
 
       private
 
-      def s3_interface
-        @s3_interface ||= ::Aws::S3Interface.new self.options[:aws_access_key_id],
-                                                 self.options[:aws_secret_access_key]
+      def bucket
+        ::Aws::S3::Resource.new(
+          credentials: aws_credentials,
+          region: self.options[:region]
+        ).bucket self.options[:directory]
       end
 
-      def retry_3_times
-        tries = 0
-        begin
-          yield
-        rescue
-          (tries += 1) <3 ? retry : raise
-        end
+      def aws_credentials
+       :: Aws::Credentials.new self.options[:aws_access_key_id],
+                             self.options[:aws_secret_access_key]
       end
-
     end
   end
 end
