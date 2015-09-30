@@ -37,7 +37,6 @@ module ContentCaching
       def adapter
         @adapter ||= Fs::new
       end
-
     end
   end
 end

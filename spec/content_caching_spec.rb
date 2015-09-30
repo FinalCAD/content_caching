@@ -94,6 +94,5 @@ module ContentCaching
         end
       end
     end
-
   end
 end
