@@ -6,7 +6,7 @@ module ContentCaching
         adapter.store content
       end
 
-      def url
+      def url(*)
         adapter.url
       end
 

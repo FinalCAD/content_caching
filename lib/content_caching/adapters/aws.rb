@@ -21,8 +21,8 @@ module ContentCaching
         end
       end
 
-      def url document_path
-        bucket.object(document_path).presigned_url :get, expires_in: T_1_DAY
+      def url document_path, expires_in: nil
+        bucket.object(document_path).presigned_url :get, expires_in: expires_in || T_1_DAY
       end
 
       def delete document_path
