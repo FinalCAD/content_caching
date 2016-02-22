@@ -1,4 +1,4 @@
-require 'aws-sdk-resources' # This lib is accessible through ::Aws...
+require 's3'
 
 module ContentCaching
   module Adapter
@@ -16,33 +16,35 @@ module ContentCaching
       def store document_path, content
         retryable(3) do
           content.rewind if content.respond_to?(:rewind)
-          bucket.put_object key: document_path,
-            body: (content.respond_to?(:read) ? content.read : content)
+          new_object = bucket.objects.build document_path
+          new_object.content = content.respond_to?(:read) ? content.read : content
+          new_object.save
         end
       end
 
-      def url document_path, expires_in: nil
-        bucket.object(document_path).presigned_url :get, expires_in: expires_in || T_1_DAY
+      def url document_path, expires_at: nil
+        bucket.object(document_path).temporary_url expires_at || Time.now + T_1_DAY
       end
 
       def delete document_path
         retryable(3) do
-          bucket.object(document_path).delete
+          bucket.object.find(document_path).destroy
         end
       end
 
       private
 
-      def bucket
-        ::Aws::S3::Resource.new(
-          credentials: aws_credentials,
-          region: self.options[:region]
-        ).bucket self.options[:directory]
+      def service
+        @service ||= S3::Service.new(
+          :access_key_id => self.options[:aws_access_key_id],
+          :secret_access_key => self.options[:aws_secret_access_key],
+          :use_ssl => true,
+          :use_vhost => true
+        )
       end
 
-      def aws_credentials
-       :: Aws::Credentials.new self.options[:aws_access_key_id],
-                             self.options[:aws_secret_access_key]
+      def bucket
+        @bucket ||= service.bucket(self.options[:directory])
       end
     end
   end
