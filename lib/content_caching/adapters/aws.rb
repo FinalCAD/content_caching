@@ -1,4 +1,5 @@
 require 's3'
+require 'retryable_block'
 
 module ContentCaching
   module Adapter
@@ -17,7 +18,7 @@ module ContentCaching
         retryable(3) do
           content.rewind if content.respond_to?(:rewind)
           new_object = bucket.objects.build document_path
-          new_object.content = content.respond_to?(:read) ? content.read : content
+          new_object.content = content
           new_object.save
         end
       end
