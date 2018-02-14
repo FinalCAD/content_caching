@@ -34,6 +34,18 @@ module ContentCaching
           end
         end
       end
+
+      context "when directory doesn't exist" do
+        let(:path) { 'public/pages/custom-directory/page.html' }
+
+        before { FileUtils.rm_rf 'tmp/public/pages/custom-directory' }
+        after { FileUtils.rm_rf 'tmp/public/pages/custom-directory' }
+
+        it "creates missing directory" do
+          content_caching.store Pathname('spec/fixtures/page.html')
+          expect(Pathname('tmp/public/pages/custom-directory/page.html')).to be_exist
+        end
+      end
     end
 
     context 'aws', pending: true do

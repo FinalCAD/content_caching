@@ -11,8 +11,8 @@ module ContentCaching
         super
       end
 
-      def url
-        adapter.url document_path
+      def url(expires_at: nil)
+        adapter.url document_path, expires_at: expires_at
       end
 
       def store content

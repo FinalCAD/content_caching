@@ -11,7 +11,7 @@ module ContentCaching
         super
       end
 
-      def url
+      def url(*)
         adapter.url document_url
       end
 
