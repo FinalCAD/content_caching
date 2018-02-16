@@ -1,8 +1,15 @@
 language: ruby
 script: bundle exec rspec
 rvm:
+  - 2.5.0
   - 2.2.3
   - ruby-head
 matrix:
   allow_failures:
     - rvm: ruby-head
+deploy:
+  provider: script
+  script: sh bin/package_push.sh
+  on:
+    branch: master
+    rvm: 2.5.0
