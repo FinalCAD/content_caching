@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'right_http_connection', '~> 1.4'
 
   spec.add_dependency 's3', '~> 0.3'
-  spec.add_dependency 'retryable_block', '0.0.1'
+  spec.add_dependency 'retryable', '~> 3.0.0'
 end
