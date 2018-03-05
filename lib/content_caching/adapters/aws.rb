@@ -3,8 +3,6 @@ require 's3'
 module ContentCaching
   module Adapter
     class Aws
-      include RetryableBlock
-
       T_1_DAY = 86400.freeze
 
       attr_reader :options
