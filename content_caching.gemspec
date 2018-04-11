@@ -22,6 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'vcr',     '~> 2.9'
   spec.add_development_dependency 'right_http_connection', '~> 1.4'
 
-  spec.add_dependency 's3', '~> 0.3'
+  spec.add_dependency 'aws-sdk-s3', '~> 1'
   spec.add_dependency 'retryable', '~> 3.0.0'
 end
