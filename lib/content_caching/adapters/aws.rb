@@ -1,4 +1,4 @@
-require 's3'
+require 'aws-sdk-s3'
 
 module ContentCaching
   module Adapter
@@ -33,16 +33,19 @@ module ContentCaching
       private
 
       def service
-        @service ||= S3::Service.new(
-          :access_key_id => self.options[:aws_access_key_id],
-          :secret_access_key => self.options[:aws_secret_access_key],
-          :use_ssl => true,
-          :use_vhost => true
+        @service ||= ::Aws::S3::Resource.new(
+          credentials: aws_credentials,
+          region: self.options[:region]
         )
       end
 
       def bucket
         @bucket ||= service.bucket(self.options[:directory])
+      end
+
+      def aws_credentials
+        ::Aws::Credentials.new(self.options[:aws_access_key_id],
+                               self.options[:aws_secret_access_key])
       end
     end
   end
