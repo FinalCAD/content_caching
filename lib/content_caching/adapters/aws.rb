@@ -14,9 +14,9 @@ module ContentCaching
       def store document_path, content
         Retryable.retryable(tries: 3) do
           content.rewind if content.respond_to?(:rewind)
-          new_object = bucket.objects.build document_path
-          new_object.content = content
-          new_object.save
+          bucket.put_object(key: document_path,
+                            body: actual_content(content)
+                            )
         end
       end
 
@@ -43,6 +43,14 @@ module ContentCaching
 
       def bucket
         @bucket ||= service.bucket(self.options[:directory])
+      end
+
+      def actual_content(content)
+        if content.respond_to?(:read)
+          content.read
+        else
+          content
+        end
       end
     end
   end
