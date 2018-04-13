@@ -25,7 +25,7 @@ module ContentCaching
 
       def delete document_path
         Retryable.retryable(tries: 3) do
-          bucket.object(document_path).destroy
+          bucket.object(document_path).delete
         end
       end
 
