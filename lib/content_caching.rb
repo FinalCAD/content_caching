@@ -1,3 +1,4 @@
+require 'retryable'
 require_relative 'content_caching/version'
 require_relative 'content_caching/configuration'
 require_relative 'content_caching/wrapper'
