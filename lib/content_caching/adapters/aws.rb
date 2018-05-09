@@ -12,10 +12,8 @@ module ContentCaching
       end
 
       def store document_path, content
-        Retryable.retryable(tries: 3) do
-          bucket.put_object(key: document_path,
-                            body: content_data(content)
-                           )
+        ::Retryable.retryable(tries: 3) do
+          bucket.put_object(key: document_path, body: content)
         end
       end
 
@@ -46,16 +44,6 @@ module ContentCaching
         ::Aws::Credentials.new(self.options[:aws_access_key_id],
                                self.options[:aws_secret_access_key])
       end
-
-      def content_data(content)
-        content.rewind if content.respond_to?(:rewind)
-        if content.respond_to?(:read)
-          content.read
-        else
-          content
-        end
-      end
-
     end
   end
 end
