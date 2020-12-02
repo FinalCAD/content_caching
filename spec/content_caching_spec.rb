@@ -86,7 +86,7 @@ module ContentCaching
 
         before do
           # VCR.use_cassette('store') do
-            content_caching.store Pathname('spec/fixtures/page.html')
+            content_caching.store Pathname('spec/fixtures/page.html'), :html
           # end
         end
 

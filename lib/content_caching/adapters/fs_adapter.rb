@@ -15,7 +15,7 @@ module ContentCaching
         adapter.url document_url
       end
 
-      def store content, type
+      def store content, type=nil
         adapter.store document_path, content, type
       end
 

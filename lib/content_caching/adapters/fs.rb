@@ -4,7 +4,7 @@ module ContentCaching
   module Adapter
     class Fs
 
-      def store document_path, content, type
+      def store document_path, content, type=nil
         content.rewind if content.respond_to?(:rewind)
         create_directory_for(document_path)
         File.write url(document_path), content.respond_to?(:read) ? content.read : content
