@@ -11,9 +11,13 @@ module ContentCaching
         @options = options
       end
 
-      def store document_path, content
+      def store document_path, content, type
         ::Retryable.retryable(tries: 3) do
-          bucket.put_object(key: document_path, body: content)
+          if type === :html
+            bucket.object(document_path).put(body: content)
+          else
+            bucket.object(document_path).upload_file(content)
+          end
         end
       end
 

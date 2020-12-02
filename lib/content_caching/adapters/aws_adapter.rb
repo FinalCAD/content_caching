@@ -15,8 +15,8 @@ module ContentCaching
         adapter.url document_path, expires_in: expires_in
       end
 
-      def store content
-        adapter.store document_path, content
+      def store content, type
+        adapter.store document_path, content, type
       end
 
       def delete
